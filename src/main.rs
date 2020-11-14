@@ -18,7 +18,7 @@ fn main() {
     }
 
     let args = Cli {
-        file_path: &args[1]
+        file_path: &args[1],
     };
 
     let md_file = fs::read_to_string(args.file_path);
@@ -26,7 +26,8 @@ fn main() {
     match md_file {
         Ok(content) => {
             // Lex file
-            lex(&content);
+            let tokens = lex(&content);
+            println!("{:#?}", tokens);
         }
         Err(error) => {
             eprintln!("Could not find file: {}", args.file_path);
@@ -34,4 +35,3 @@ fn main() {
         }
     }
 }
-
