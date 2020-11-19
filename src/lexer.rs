@@ -20,6 +20,7 @@ enum TokenKind {
     StringVal,
     NewLine,
     Code { kind: CodeKind },
+    Blockquote,
     Literal { kind: LiteralKind },
 }
 
@@ -51,14 +52,17 @@ pub fn lex(stream: &str) -> Vec<Token> {
             // Match word to tokens
             let token_kind = match word {
                 "#" => TokenKind::Heading(HeadingLevel::H1),
+                "##" => TokenKind::Heading(HeadingLevel::H2),
+                "###" => TokenKind::Heading(HeadingLevel::H3),
+                "####" => TokenKind::Heading(HeadingLevel::H4),
+                "#####" => TokenKind::Heading(HeadingLevel::H5),
+                "######" => TokenKind::Heading(HeadingLevel::H6),
+                ">" => TokenKind::Blockquote,
+                "```" => TokenKind::Code {
+                    kind: CodeKind::Block,
+                },
                 _ => {
                     TokenKind::StringVal
-                    // for c in chars {
-                    //     match c {
-                    //         "_" => TokenKind::Literal{kind: LiteralKind::Int},
-                    //         _ => break
-                    //     }
-                    // }
                 }
             };
 
@@ -80,3 +84,4 @@ pub fn lex(stream: &str) -> Vec<Token> {
 
     tokens
 }
+
